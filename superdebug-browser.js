@@ -49,7 +49,12 @@ function handleResponse (request, start, logger, debugLog, debugCurl) {
     var now = new Date().getTime()
     var elapsed = now - start
     var elapseTime = elapsed + 'ms'
-    var protocol = request.protocol.toUpperCase().replace(/[^\w]/g, '')
+    var requestProtocol = request.protocol
+    if (!requestProtocol) {
+      var match = /^\w+/i.exec(request.url)
+      requestProtocol = match && match[0] || ''
+    }
+    var protocol = requestProtocol.toUpperCase().replace(/[^\w]/g, '')
     var requestMethod = request.method.toUpperCase()
     var curl = formatToCurl(request, request.url)
 
